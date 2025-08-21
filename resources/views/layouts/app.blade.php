@@ -12,8 +12,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
 </head>
-@include('components.toast')
 <script src="{{ asset('js/toast.js') }}"></script>
+@include('components.toast')
 
 <body>
     {{-- Header --}}

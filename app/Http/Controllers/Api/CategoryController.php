@@ -25,7 +25,7 @@ class CategoryController extends Controller
         ], 201);
     }
 
-    // 🟢 List all categories (with optional nested structure)
+
     public function index()
     {
         $categories = Category::with('children')->whereNull('parent_id')->get();
@@ -33,14 +33,13 @@ class CategoryController extends Controller
         return response()->json($categories);
     }
 
-    // 🟢 Show single category with its children
     public function show($id)
     {
         $category = Category::with('children')->findOrFail($id);
         return response()->json($category);
     }
 
-    // 🟡 Optional: Update category
+
     public function update(Request $request, Category $category)
     {
         $validated = $request->validate([
@@ -56,7 +55,7 @@ class CategoryController extends Controller
         ]);
     }
 
-    // 🔴 Delete category
+
     public function destroy(Category $category)
     {
         $category->delete();

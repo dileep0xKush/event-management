@@ -24,7 +24,7 @@ class AuthController extends Controller
 
         $user = Auth::user();
 
-        // 🔹 Generate Passport token
+
         $token = $user->createToken('API Token')->accessToken;
 
         return response()->json([
@@ -38,7 +38,7 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         if ($request->user()) {
-            // revoke only current token
+
             $request->user()->token()->revoke();
         }
 

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 
 class EventController extends Controller
 {
-    // 🔹 Store new event
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -36,13 +36,13 @@ class EventController extends Controller
         return response()->json(['message' => 'Event created successfully', 'data' => $event]);
     }
 
-    // 🔹 List events (filtered + time-zone adjusted)
+
     public function index(Request $request)
     {
+
         $timezone = $request->header('Time-Zone', config('app.timezone'));
 
         $events = Event::with(['event_images', 'category'])
-            ->where('publish_at', '<=', now())
             ->get()
             ->map(function ($event) use ($timezone) {
                 $event->publish_at = $event->publish_at->timezone($timezone)->format('Y-m-d H:i:s');
@@ -52,7 +52,6 @@ class EventController extends Controller
         return response()->json($events);
     }
 
-    // 🔹 List all (admin panel)
     public function all()
     {
         return Event::with(['images', 'category'])
@@ -60,7 +59,6 @@ class EventController extends Controller
             ->get();
     }
 
-    // 🔴 Soft delete event
     public function destroy($id)
     {
         $event = Event::findOrFail($id);
@@ -69,7 +67,7 @@ class EventController extends Controller
         return response()->json(['message' => 'Event deleted (soft delete).']);
     }
 
-    // 🛑 Force delete event (permanent)
+
     public function forceDelete($id)
     {
         $event = Event::withTrashed()->findOrFail($id);
