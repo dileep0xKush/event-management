@@ -47,13 +47,4 @@ class AuthController extends Controller
             'message' => 'Logged out successfully'
         ]);
     }
-
-    // 🔹 Check if user session is still active
-    public function me(Request $request)
-    {
-        return response()->json([
-            'status' => true,
-            'user'   => $request->user()
-        ]);
-    }
 }
