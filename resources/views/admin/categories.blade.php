@@ -8,7 +8,10 @@
         <div class="col-lg-10">
             <div class="card shadow-sm border-0 mb-4">
                 <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">📁 Category Management</h5>
+                    <h5 class="mb-0">
+                        <i class="bi bi-folder me-2"></i> Category Management
+                    </h5>
+
                 </div>
                 <div class="card-body">
                     {{-- Add Category Form --}}
@@ -36,7 +39,7 @@
             {{-- Categories List --}}
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-light">
-                    <h6 class="mb-0">📋 All Categories</h6>
+                    <h6 class="mb-0"> <i class="bi bi-folder me-2"></i> All Categories</h6>
                 </div>
                 <div class="card-body" id="categoryList">
                     <p>Loading...</p>
