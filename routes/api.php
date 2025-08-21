@@ -8,7 +8,7 @@ use App\Http\Controllers\Api\EventController;
 
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::middleware('auth:api')->group(function () {
+Route::middleware(['auth:api', 'custom.throttle'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
 

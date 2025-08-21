@@ -68,3 +68,18 @@ async function checkAuthOnPageLoad() {
 }
 
 document.addEventListener("DOMContentLoaded", checkAuthOnPageLoad);
+
+
+
+
+
+window.Echo.private(`user.${userId}`)
+    .listen('UserForceLogout', (e) => {
+        if (e.session_id === currentSessionId) {
+            alert("You have logged in from another browser. You have been logged out from this session.");
+
+            // Clear session/token
+            localStorage.removeItem('auth_token');
+            window.location.href = '/';
+        }
+    });

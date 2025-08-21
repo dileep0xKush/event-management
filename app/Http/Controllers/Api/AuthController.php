@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Passport\Token;
+use Illuminate\Support\Str;
+use App\Events\UserForceLogout;
 
 class AuthController extends Controller
 {
@@ -24,8 +27,20 @@ class AuthController extends Controller
 
         $user = Auth::user();
 
+        if ($user->active_token_id) {
+            $oldToken = Token::find($user->active_token_id);
+            if ($oldToken) {
+                $oldToken->revoke();
+                broadcast(new UserForceLogout($user->id, $oldToken));
+            }
+        }
 
-        $token = $user->createToken('API Token')->accessToken;
+        $tokenResult = $user->createToken('API Token');
+        $token = $tokenResult->accessToken;
+        $tokenId = $tokenResult->token->id;
+
+        $user->active_token_id = $tokenId;
+        $user->save();
 
         return response()->json([
             'status'  => true,
@@ -38,6 +53,14 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         if ($request->user()) {
+
+            $user = $request->user();
+
+            if ($user) {
+                $user->token()->revoke();
+                $user->active_token_id = null;
+                $user->save();
+            }
 
             $request->user()->token()->revoke();
         }
