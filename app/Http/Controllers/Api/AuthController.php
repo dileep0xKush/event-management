@@ -31,7 +31,9 @@ class AuthController extends Controller
             $oldToken = Token::find($user->active_token_id);
             if ($oldToken) {
                 $oldToken->revoke();
-                broadcast(new UserForceLogout($user->id, $oldToken));
+
+                // Broadcast session_id (token ID)
+                broadcast(new UserForceLogout($user->id, $oldToken->id));
             }
         }
 
@@ -46,10 +48,10 @@ class AuthController extends Controller
             'status'  => true,
             'message' => 'Login successful',
             'token'   => $token,
+            'session_id' => $tokenId, // Include this in response
             'user'    => $user
         ]);
     }
-
     public function logout(Request $request)
     {
         if ($request->user()) {

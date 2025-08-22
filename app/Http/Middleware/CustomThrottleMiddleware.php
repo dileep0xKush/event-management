@@ -19,9 +19,10 @@ class CustomThrottleMiddleware
 
     public function handle(Request $request, Closure $next)
     {
+        $limit = (int) env('LOGIN_RATE_LIMIT', 100);
         $key = Str::lower($request->input('email')) . '|' . $request->ip();
 
-        if ($this->limiter->tooManyAttempts($key, 5)) {
+        if ($this->limiter->tooManyAttempts($key, $limit)) {
             return response()->json([
                 'message' => 'Too many login attempts. Please try again later.'
             ], Response::HTTP_TOO_MANY_REQUESTS);
